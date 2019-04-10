@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {Component} from '@angular/core';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {RecupAlimentationProvider} from "../../providers/recup-alimentation";
+import {PeriodeAlimentationProvider} from "../../providers/periode-alimentation";
 
 /**
  * Generated class for the RecupAlimentationPage page.
@@ -15,11 +17,30 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 })
 export class RecupAlimentationPage {
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  detail = [{
+    paddock: null,
+    note: null,
+    nbrVache: null,
+    id: null
+  }];
+
+  alimentationParams = [{
+    periode: null,
+    ration: null,
+    qtte: null
+  }];
+
+
+  constructor(public navCtrl: NavController, public navParams: NavParams,
+              public recupAlimentationProvider: RecupAlimentationProvider) {
+    this.getData();
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad RecupAlimentationPage');
+  getData() {
+    if (this.navParams.get('param') == true) {
+      this.recupAlimentationProvider.getDetailOfSession(this.detail, this.alimentationParams);
+    }
   }
+
 
 }

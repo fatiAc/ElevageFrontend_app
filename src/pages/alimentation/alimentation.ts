@@ -20,9 +20,13 @@ export class AlimentationPage {
   detail_alimentation: any;
   recup_alimentation: any;
 
+
+
   constructor(public navCtrl: NavController, public navParams: NavParams) {
     this.detail_alimentation = DetailAlimentationPage;
     this.recup_alimentation = RecupAlimentationPage;
   }
+
+
 
 }

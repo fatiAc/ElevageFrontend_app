@@ -3,7 +3,6 @@ import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {UserProvider} from "../../providers/userProvider";
 import {HomePage} from "../home/home";
 import {AlimentationPage} from "../alimentation/alimentation";
-import {DetailAlimentationPage} from "../detail-alimentation/detail-alimentation";
 
 @IonicPage()
 @Component({
@@ -28,7 +27,7 @@ export class SignInPage {
         this.userProvider.verifyPassword(this.password).subscribe(response => {
           console.log('Password Response:', response);
           if (response == true) {
-            this.navCtrl.push(DetailAlimentationPage, this.login);
+            this.navCtrl.push(AlimentationPage, this.login);
           }
         })
       }

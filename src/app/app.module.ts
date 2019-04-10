@@ -17,6 +17,10 @@ import {DetailAlimentationProvider} from '../providers/detail-alimentation';
 import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {PeriodeAlimentationProvider} from '../providers/periode-alimentation';
 import {NourritureProvider} from '../providers/nourritureProvider';
+import { RecupAlimentationProvider } from '../providers/recup-alimentation';
+import {PrepareAlimentationPage} from "../pages/prepare-alimentation/prepare-alimentation";
+import { PrepareAlimentationProvider } from '../providers/prepare-alimentation';
+import {PopoverComponent} from "../components/popover/popover";
 
 @NgModule({
   declarations: [
@@ -25,7 +29,9 @@ import {NourritureProvider} from '../providers/nourritureProvider';
     SignInPage,
     DetailAlimentationPage,
     AlimentationPage,
-    RecupAlimentationPage
+    RecupAlimentationPage,
+    PrepareAlimentationPage,
+    PopoverComponent
   ],
   imports: [
     //added by me
@@ -43,7 +49,9 @@ import {NourritureProvider} from '../providers/nourritureProvider';
     SignInPage,
     DetailAlimentationPage,
     AlimentationPage,
-    RecupAlimentationPage
+    RecupAlimentationPage,
+    PrepareAlimentationPage,
+    PopoverComponent
   ],
   providers: [
     StatusBar,
@@ -52,7 +60,9 @@ import {NourritureProvider} from '../providers/nourritureProvider';
     UserProvider,
     DetailAlimentationProvider,
     PeriodeAlimentationProvider,
-    NourritureProvider
+    NourritureProvider,
+    RecupAlimentationProvider,
+    PrepareAlimentationProvider
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

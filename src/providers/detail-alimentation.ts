@@ -14,7 +14,7 @@ export class DetailAlimentationProvider {
   constructor(public http: Http) {
   }
 
-  clonePaddockID(paddocks: any) {
+  clonePaddockName(paddocks: any) {
     this.http.get('http://localhost:8080/app/paddock/allPadock').pipe(
       map(res => res.json()))
       .subscribe(response => {
