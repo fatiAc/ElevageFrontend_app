@@ -1,0 +1,38 @@
+<!--
+  Generated template for the MouvementPaddockPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+
+<ion-content padding>
+
+  <ion-item>
+    <ion-label>Date :</ion-label>
+    <ion-datetime display-format="YYYY-MM-DD" [(ngModel)]="selectedDate"></ion-datetime>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Paddock source :</ion-label>
+    <ion-select [(ngModel)]="paddockSrc" (ngModelChange)="getNbrElementAndDestPaddocks()">
+      <ion-option *ngFor="let paddock of paddocksSrc" value="{{paddock.id}}">{{paddock.paddockName}}</ion-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label>Nombre elements : {{nbrElements}}</ion-label>
+  </ion-item>
+
+  <ion-item>
+    <ion-label>Paddock destination :</ion-label>
+    <ion-select [(ngModel)]="paddockDest">
+      <ion-option *ngFor="let paddock of paddocksDest" value="{{paddock.id}}">{{paddock.paddockName}}</ion-option>
+    </ion-select>
+  </ion-item>
+
+  <div padding>
+    <button ion-button (click)="save()" block>
+      <ion-icon slot="start" name="paper-plane"> Enregistrer</ion-icon>
+    </button>
+  </div>
+</ion-content>

@@ -1,11 +1,9 @@
 import {Component} from '@angular/core';
-import {DateTime, IonicPage, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {DetailAlimentationProvider} from "../../providers/detail-alimentation";
 import {PeriodeAlimentationProvider} from "../../providers/periode-alimentation";
 import {NourritureProvider} from "../../providers/nourritureProvider";
-import {not} from "rxjs/util/not";
 import {RecupAlimentationPage} from "../recup-alimentation/recup-alimentation";
-import {AlimentationPage} from "../alimentation/alimentation";
 import {LoadingController} from 'ionic-angular';
 
 /**

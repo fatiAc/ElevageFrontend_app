@@ -1,0 +1,111 @@
+<!--
+  Generated template for the PrepareAlimentationPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+
+<html>
+<ion-content>
+
+  <ion-card>
+    <ion-item>
+      <ion-label>Date :</ion-label>
+      <ion-datetime display-format="YYYY-MM-DD" [(ngModel)]="selectedDate"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Période :</ion-label>
+      <ion-select [(ngModel)]="selectedPeriode" (ngModelChange)="updateRations()">
+        <ion-option *ngFor="let item of periodes" value="{{item.id}}">{{item.periode}}</ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Ration :</ion-label>
+      <ion-select [(ngModel)]="selectedRation" (ngModelChange)="getQtteTotaleAndPaddocks()">
+        <ion-option *ngFor="let ration of rations" value="{{ration.id}}">{{ration.rationName}}</ion-option>
+      </ion-select>
+    </ion-item>
+    <ion-item>
+      <ion-label>Quantité totale : {{qtteTotale}}</ion-label>
+    </ion-item>
+
+    <ion-item>
+      <table class="myTables">
+        <tr>
+          <th>Paddock</th>
+          <th>Quantité</th>
+        </tr>
+        <tr *ngFor="let item of paddocks_qtte">
+          <td>{{item.paddockName}}</td>
+          <td>{{item.qtte}}</td>
+        </tr>
+      </table>
+    </ion-item>
+    <ion-item>
+      <ion-label>Machine :</ion-label>
+      <ion-select [(ngModel)]="selectedMachine" (ngModelChange)="getDefaultNbrPartieAndLivraison()">
+        <ion-option *ngFor="let machine of machines"
+                    [value]="{id: machine.id, name: machine.machineName, capacite: machine.capacite}"
+                    selected="false">{{machine.machineName}}, {{machine.capacite}} KG
+        </ion-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Nbr Partie par defaut: {{nbrPartie}}</ion-label>
+    </ion-item>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col>
+          <ion-input placeholder="Votre choix" type="number" [(ngModel)]="selectedNbrPartie"></ion-input>
+
+        </ion-col>
+        <ion-col>
+          <button ion-button (click)="genererLivraison()" block>
+            <!--<ion-icon slot="start" name="paper-plane">-->
+            Générer livraison
+            <!--</ion-icon>-->
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+
+  </ion-card>
+
+  <ion-card>
+    <ion-item>
+      <ion-card-header>
+        Livraisons details
+      </ion-card-header>
+    </ion-item>
+    <ion-list *ngFor="let livraison of livraisons">
+      <ion-item-divider color="light">Numéro de livraison : {{livraison.numero}}</ion-item-divider>
+      <ion-item>
+        <ion-label>Quantité de livraison : {{livraison.quantite}}</ion-label>
+      </ion-item>
+
+      <ion-item>
+        <table class="myTables">
+          <tr>
+            <th>Paddock</th>
+            <th>Quantité</th>
+          </tr>
+          <tr *ngFor="let paddock of livraison.details">
+            <td>{{paddock.paddockName}}</td>
+            <td>{{paddock.qtte}}</td>
+          </tr>
+        </table>
+      </ion-item>
+    </ion-list>
+
+    <div padding>
+      <button ion-button (click)="valider()" block>
+        <ion-icon slot="start" name="paper-plane"> Valider</ion-icon>
+      </button>
+    </div>
+  </ion-card>
+</ion-content>
+</html>

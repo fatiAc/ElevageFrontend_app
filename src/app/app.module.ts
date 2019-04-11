@@ -14,13 +14,15 @@ import {DetailAlimentationPage} from "../pages/detail-alimentation/detail-alimen
 import {AlimentationPage} from "../pages/alimentation/alimentation";
 import {RecupAlimentationPage} from "../pages/recup-alimentation/recup-alimentation";
 import {DetailAlimentationProvider} from '../providers/detail-alimentation';
-import {NgxDatatableModule} from '@swimlane/ngx-datatable';
 import {PeriodeAlimentationProvider} from '../providers/periode-alimentation';
 import {NourritureProvider} from '../providers/nourritureProvider';
-import { RecupAlimentationProvider } from '../providers/recup-alimentation';
+import {RecupAlimentationProvider} from '../providers/recup-alimentation';
 import {PrepareAlimentationPage} from "../pages/prepare-alimentation/prepare-alimentation";
-import { PrepareAlimentationProvider } from '../providers/prepare-alimentation';
-import {PopoverComponent} from "../components/popover/popover";
+import {PrepareAlimentationProvider} from '../providers/prepare-alimentation';
+import {MouvementProvider} from '../providers/mouvement';
+import {MouvementElementPage} from "../pages/mouvement-element/mouvement-element";
+import {MouvementPaddockPage} from "../pages/mouvement-paddock/mouvement-paddock";
+import {MouvementTabsPage} from "../pages/mouvement-tabs/mouvement-tabs";
 
 @NgModule({
   declarations: [
@@ -31,13 +33,15 @@ import {PopoverComponent} from "../components/popover/popover";
     AlimentationPage,
     RecupAlimentationPage,
     PrepareAlimentationPage,
-    PopoverComponent
+    MouvementElementPage,
+    MouvementPaddockPage,
+    MouvementTabsPage,
+
   ],
   imports: [
     //added by me
     HttpModule,
     HttpClientModule,
-    NgxDatatableModule,
     ///////
     BrowserModule,
     IonicModule.forRoot(MyApp)
@@ -51,7 +55,10 @@ import {PopoverComponent} from "../components/popover/popover";
     AlimentationPage,
     RecupAlimentationPage,
     PrepareAlimentationPage,
-    PopoverComponent
+    MouvementElementPage,
+    MouvementTabsPage,
+    MouvementPaddockPage
+
   ],
   providers: [
     StatusBar,
@@ -62,9 +69,11 @@ import {PopoverComponent} from "../components/popover/popover";
     PeriodeAlimentationProvider,
     NourritureProvider,
     RecupAlimentationProvider,
-    PrepareAlimentationProvider
+    PrepareAlimentationProvider,
+    MouvementProvider
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
+
 export class AppModule {
 }
