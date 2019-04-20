@@ -1,10 +1,5 @@
-import {Injectable, ViewChild} from '@angular/core';
-import {map} from "rxjs/operators";
-import {Http, RequestOptions, Headers} from "@angular/http";
-import {HttpClient} from "@angular/common/http";
-import {id} from "@swimlane/ngx-datatable/release/utils";
-import {RecupAlimentationPage} from "../pages/recup-alimentation/recup-alimentation";
-import {Nav, NavController} from "ionic-angular";
+import {Injectable} from '@angular/core';
+import {HttpMethods} from "./tools/httpMethods";
 
 /*
   Generated class for the PeriodeAlimentationProvider provider.
@@ -16,18 +11,20 @@ import {Nav, NavController} from "ionic-angular";
 export class PeriodeAlimentationProvider {
 
 
-  data = [];
-  isCreatedSession = false;
-  isCreatedDetail = false;
+  constructor(public httpMethods: HttpMethods) {
+  }
 
-  constructor(public http: Http) {
-    console.log('Hello PeriodeAlimentationProvider Provider');
+  shift(data) {
+    let i = 0;
+    while (i < data.length) {
+      data.shift();
+      i++;
+    }
   }
 
   clonePeriodeInfo(periodeData) {
-    periodeData.shift();
-    this.http.get(' http://localhost:8080/app/periodeAlimentation/periodeName').pipe(
-      map(res => res.json()))
+    this.shift(periodeData);
+    this.httpMethods.get(' http://localhost:8080/app/periodeAlimentation/periodesInfo', '')
       .subscribe(response => {
         if (response != false) {
           for (let item of response) {
@@ -37,83 +34,35 @@ export class PeriodeAlimentationProvider {
       });
   }
 
-
-  myRequestOptions() {
-    let headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    let requestOptions = new RequestOptions({headers: headers});
-    return requestOptions;
-  }
-
   saveSessionAlimentation(userLogin, date) {
-    this.isCreatedSession = true;
     let sessionData = {
-      login: 'batima',
+      login: userLogin,
       date: date,
     };
+    return this.httpMethods.post('http://localhost:8080/app/sessionAlimentation/saveSessionAlimentation', sessionData)
 
-    this.http.post('http://localhost:8080/app/sessionAlimentation/saveSessionAlimentation', sessionData, this.myRequestOptions())
-      .subscribe(data => {
-        console.log("succes !!! ");
-      });
   }
 
 
-  savePeriodeRation(detailSessionID, nbrVache: number, periodes, rations, quantites) {
-    let myData = {
-      detailSessionID: detailSessionID,
+  savePeriodeRation(nbrVache: number, periodes, rations, quantites) {
+    let data = {
       nbrVache: nbrVache,
       periodes: periodes,
       rations: rations,
       quantites: quantites
     }
-    return this.http.post('http://localhost:8080/app/sessionAlimentation/periodeRation', myData, this.myRequestOptions()).pipe(
-      map(res => res.json()))
-      .subscribe(response => {
-        console.log(response);
-      })
-
-
+    return this.httpMethods.post('http://localhost:8080/app/sessionAlimentation/periodeRation', data)
   }
 
-
-  saveDetailAlimentation(selectedPaddock, note, nbrVache, comment, periodes, rations, quantites) {
-    this.isCreatedDetail = true;
-    this.http.get('http://localhost:8080/app/sessionAlimentation/paddockID/' + selectedPaddock).pipe(
-      map(res => res.json())).subscribe(paddockResponse => {
-      let detail_aliment_Data = {
-        note: note,
-        nbrVache: nbrVache,
-        paddockID: paddockResponse.id,
-        comment: comment,
-      };
-      detail_aliment_Data.paddockID = paddockResponse.id;
-      return this.http.post(' http://localhost:8080/app/sessionAlimentation/detailSessionAlimentation', detail_aliment_Data, this.myRequestOptions()).pipe(
-        map(res => res.json())).subscribe(detailAlimentationResponse => {
-        this.savePeriodeRation(detailAlimentationResponse.id, nbrVache, periodes, rations, quantites);
-      })
-    });
+  saveDetailAlimentation(selectedPaddock, note, nbrVache, comment) {
+    let detail_aliment_Data = {
+      note: note,
+      nbrVache: nbrVache,
+      paddockID: selectedPaddock,
+      comment: comment,
+    };
+    return this.httpMethods.post(' http://localhost:8080/app/sessionAlimentation/detailSessionAlimentation', detail_aliment_Data)
   }
 
-  saveAll(userLogin, date, selectedPaddock, note, nbrVache, comment, periodes, quantites, rations) {
-    if (!this.isCreatedSession) {
-      this.saveSessionAlimentation(userLogin, date);
-    }
-    this.saveDetailAlimentation(selectedPaddock, note, nbrVache, comment, periodes, rations, quantites);
-  }
-
-  cloneData(data, periodes, rations, quantites) {
-    for (let item of data) {
-      data.shift();
-    }
-    for (let periode of periodes) {
-      let ration = rations[periodes.indexOf(periode)];
-      let qtte = quantites[periodes.indexOf(periode)];
-      console.log("ration === ", ration, "  periode == ", periode, "  qtte == ", qtte);
-      if (ration != null && qtte != 0) {
-        data.push({periode: periode, ration: ration, qtte: qtte});
-      }
-    }
-  }
 
 }

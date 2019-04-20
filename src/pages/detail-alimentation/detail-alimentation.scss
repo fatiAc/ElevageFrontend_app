@@ -1,19 +1,23 @@
 page-detail-alimentation {
 
-  .header .col {
-    background-color:lightgrey;
-  }
-  .col {
-    border: solid 0.5px grey;
-    border-bottom-style: none;
-    border-right-style: none;
+  h1 {
+    text-align: center;
+    color: #4d4d4d;
   }
 
-  .col:last-child {
-    border-right: solid 1px grey;
+  input {
+    width:auto;
+    height: 35px;
+    background-color: transparent;
+    border-radius: 8px;
+    border-color: #222222;
+    text-indent: 25px;
+    font-size: 1.5em;
+    color: #222222;
+    :focus {
+      color: #ffffff;
+    }
   }
 
-  .row:last-child .col {
-    border-bottom: solid 1px grey;
-  }
+
 }

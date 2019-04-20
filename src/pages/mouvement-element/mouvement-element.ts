@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {MouvementProvider} from "../../providers/mouvement";
+import {MessageTools} from "../../providers/tools/messageTools";
 
 /**
  * Generated class for the MouvementElementPage page.
@@ -22,68 +23,55 @@ export class MouvementElementPage {
   desPaddocks = [];
   paddockDest: number;
   poids: number;
-  user_login = 'admin';
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public mouvementProvider: MouvementProvider,
               public alertCtrl: AlertController,
-              public toastCtrl: ToastController) {
+              public toastCtrl: ToastController, public messageTools: MessageTools) {
   }
 
 
   shift(data) {
-    for (let item of data) {
+    let i = 0;
+    while (i < data.length) {
       data.shift();
+      i++;
     }
   }
 
-  toastParam(msg) {
-    const toast = this.toastCtrl.create({
-      message: msg,
-      duration: 3000,
-      position: 'Middle'
-    });
-    toast.present();
-  }
 
   findPaddock() {
     if (this.snit == null) {
-      this.toastParam('veuillez saisir un SNIT');
+      this.messageTools.toastMsg(this.toastCtrl, 'veuillez saisir un SNIT');
     } else {
       this.mouvementProvider.getPaddockbyAnimal(this.snit)
         .subscribe(response => {
-          this.paddockSrc[0].id = response[0].id;
-          this.paddockSrc[0].paddockName = response[0].paddockName;
+          if (response == false) {
+            this.messageTools.toastMsg(this.toastCtrl, 'SNIT n\'existe pas');
+          } else {
+            this.paddockSrc[0].id = response[0].id;
+            this.paddockSrc[0].paddockName = response[0].paddockName;
+            this.shift(this.desPaddocks);
+            this.mouvementProvider.getDesPaddocks(this.snit, this.desPaddocks);
+          }
         });
-      this.shift(this.desPaddocks);
-      this.mouvementProvider.getDesPaddocks(this.snit, this.desPaddocks);
     }
 
   }
 
   save() {
     if (this.snit == null) {
-      this.toastParam('veuillez saisir un SNIT');
+      this.messageTools.toastMsg(this.toastCtrl, 'veuillez saisir un SNIT');
     } else if (this.paddockDest == null) {
-      this.toastParam('veuillez selectionner le paddock destination');
+      this.messageTools.toastMsg(this.toastCtrl, 'veuillez selectionner le paddock destination');
     } else {
-      this.mouvementProvider.createMouvemntMesure(this.poids, this.selectedDate, this.user_login, this.snit, this.paddockSrc[0].id, this.paddockDest)
+      this.mouvementProvider.createMouvemntMesure(this.poids, this.selectedDate,this.snit, this.paddockSrc[0].id, this.paddockDest)
         .subscribe(response => {
           if (response != null) {
-            const alert = this.alertCtrl.create({
-              title: 'Opération effectuée',
-              subTitle: 'Vous avez généré les livraisons',
-              buttons: ['OK']
-            });
-            alert.present();
+            this.messageTools.alertMsg(this.alertCtrl, 'Opération effectuée', 'Vous avez généré les livraisons');
             this.navCtrl.push(MouvementElementPage); // reinitialiser la page
           } else {
-            const alert = this.alertCtrl.create({
-              title: 'Erreur ! ',
-              subTitle: 'Veuillez réssayer votre opération',
-              buttons: ['OK']
-            });
-            alert.present();
+            this.messageTools.alertMsg(this.alertCtrl, 'Erreur ! ', 'Veuillez réssayer votre opération');
           }
         });
     }

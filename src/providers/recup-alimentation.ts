@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {map} from "rxjs/operators";
-import {Http} from "@angular/http";
+import {HttpMethods} from "./tools/httpMethods";
 
 /*
   Generated class for the RecupAlimentationProvider provider.
@@ -11,23 +10,22 @@ import {Http} from "@angular/http";
 @Injectable()
 export class RecupAlimentationProvider {
 
-  constructor(public http: Http) {
-    console.log('Hello RecupAlimentationProvider Provider');
+  constructor(public httpMethods: HttpMethods) {
   }
 
-
-  shiftData(data) {
-    for (let item of data) {
+  shift(data) {
+    let i = 0;
+    while (i < data.length) {
       data.shift();
+      i++;
     }
   }
+
   getDataOfPeriodeRation(detailSessionID, data) {
-    this.shiftData(data);
-    return this.http.get(' http://localhost:8080/app/periodeRation/periodeRationParams/' + detailSessionID).pipe(
-      map(res => res.json()))
+    this.shift(data);
+    return this.httpMethods.get(' http://localhost:8080/app/periodeRation/periodeRationParams/', detailSessionID)
       .subscribe(res => {
         for (let item of res) {
-          console.log("PeriodeRation ==  " + item);
           data.push({
             periode: item.periode,
             ration: item.rationName,
@@ -40,21 +38,18 @@ export class RecupAlimentationProvider {
 
 
   getDetailOfSession(detailSessionData, periodeRationData) {
-    return this.http.get(' http://localhost:8080/app/sessionAlimentation/detailOfSession').pipe(
-      map(res => res.json()))
+    return this.httpMethods.get(' http://localhost:8080/app/sessionAlimentation/detailOfSession', '')
       .subscribe(detailSessionResponse => {
-        this.http.get('http://localhost:8080/app/paddock/paddockName/' + detailSessionResponse.paddock_ID).pipe(
-          map(res => res.json()))
+        this.httpMethods.get('http://localhost:8080/app/paddock/paddockName/', detailSessionResponse.paddock_ID)
           .subscribe(paddockNameResponse => {
             detailSessionData.paddock = paddockNameResponse.nom;
             detailSessionData.note = detailSessionResponse.note;
             detailSessionData.id = detailSessionResponse.id;
             detailSessionData.nbrVache = detailSessionResponse.nbrVache;
-          })
+          });
         this.getDataOfPeriodeRation(detailSessionResponse.id, periodeRationData);
       });
   }
-
 
 
 }

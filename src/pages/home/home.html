@@ -1,14 +1,30 @@
 <ion-header>
   <ion-navbar>
     <ion-title>
-      Ionic Blank
+      <ion-icon name="menu" class="menu" (click)="openMenu()"></ion-icon>
     </ion-title>
   </ion-navbar>
 </ion-header>
+<ion-menu side="start" [content]="content" id="menu">
+  <ion-header>
+    <ion-toolbar color="primary">
+      <ion-title >Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
-<ion-content padding>
-  The world is your oyster.
-  <p>
-    If you get lost, the <a href="http://ionicframework.com/docs/v2">docs</a> will be your guide.
-  </p>
-</ion-content>
+
+  <ion-content>
+    <ion-list>
+      <button menuClose ion-item *ngFor="let page of pages" (click)="openPage(page)">
+
+        <ion-icon slot="start" name="{{page.icon}}">  {{page.title}}</ion-icon>
+      </button>
+      <button menuClose ion-item (click)="signOut()">
+
+        <ion-icon slot="start" name="log-out"> Déconnexion</ion-icon>
+      </button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-nav id="nav" [root]="destPage" #content swipeBackEnabled="false"></ion-nav>

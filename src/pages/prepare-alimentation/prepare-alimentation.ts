@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams, PopoverController, ViewController} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {PeriodeAlimentationProvider} from "../../providers/periode-alimentation";
 import {PrepareAlimentationProvider} from "../../providers/prepare-alimentation";
+import {MessageTools} from "../../providers/tools/messageTools";
 
 /**
  * Generated class for the PrepareAlimentationPage page.
@@ -17,12 +18,11 @@ import {PrepareAlimentationProvider} from "../../providers/prepare-alimentation"
 })
 export class PrepareAlimentationPage {
 
-  // selectedDate = new Date().toISOString();
-  selectedDate = '2019-04-04';
+  selectedDate = new Date().toISOString();
   selectedPeriode: number;
   selectedRation: number;
   periodes = [{id: null, periode: null}];
-  userLogin = 'admin';
+  userLogin: string;
   rations = [];
   machineInfo = [];
   qtteTotale: number;
@@ -38,30 +38,34 @@ export class PrepareAlimentationPage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public periodeAliment_Provider: PeriodeAlimentationProvider,
               public prepareAlimmentProvider: PrepareAlimentationProvider,
-              public popoverCtrl: PopoverController,
-              public alertCtrl: AlertController) {
+              public alertCtrl: AlertController,
+              public messageTools: MessageTools,
+              public toastCtrl: ToastController) {
     this.initUI();
   }
 
 
   initUI() {
+    this.userLogin = this.navParams.get('login');
     this.periodeAliment_Provider.clonePeriodeInfo(this.periodes);
   }
 
-  shiftData(data) {
-    for (let item of data) {
+  shift(data) {
+    let i = 0;
+    while (i < data.length) {
       data.shift();
+      i++;
     }
   }
 
   updateRations() {
-    this.shiftData(this.rations);
+    this.shift(this.rations);
     this.prepareAlimmentProvider.rationOfSelectedPeriode(this.selectedPeriode, this.selectedDate, this.userLogin, this.rations);
   }
 
 
   getQtteTotaleAndPaddocks() {
-    this.shiftData(this.machines);
+    this.shift(this.machines);
     this.prepareAlimmentProvider.machineInfo(this.selectedRation, this.machines);
     this.prepareAlimmentProvider.calculeQuantiteTotal(this.selectedPeriode, this.selectedRation, this.selectedDate, this.userLogin)
       .subscribe(data => {
@@ -69,8 +73,8 @@ export class PrepareAlimentationPage {
           this.qtteTotale = data[0].qtteTotale;
         }
       });
-    this.shiftData(this.paddocks_qtte);
-    this.shiftData(this.selectedPaddocks);
+    this.shift(this.paddocks_qtte);
+    this.shift(this.selectedPaddocks);
     this.prepareAlimmentProvider.getPaddocksWithQtte(this.selectedPeriode, this.selectedRation, this.selectedDate, this.userLogin, this.paddocks_qtte);
     this.prepareAlimmentProvider.getPaddocksWithQtte(this.selectedPeriode, this.selectedRation, this.selectedDate, this.userLogin, this.selectedPaddocks);
   }
@@ -111,20 +115,10 @@ export class PrepareAlimentationPage {
       } else nbrPreparation = this.selectedNbrPartie;
       this.prepareAlimmentProvider.createRecupSessionWithLivraison(this.selectedDate, this.userLogin, nbrPreparation, this.qtteTotale, this.machineInfo[0].id,
         this.selectedPeriode, this.selectedRation, this.livraisons);
-      const alert = this.alertCtrl.create({
-        title: 'Opération effectuée',
-        subTitle: 'Vous avez généré les livraisons',
-        buttons: ['OK']
-      });
-      alert.present();
+      this.messageTools.alertMsg(this.alertCtrl, 'Opération effectuée', 'Vous avez généré les livraisons')
       this.navCtrl.push(PrepareAlimentationPage);
     } else {
-      const alert = this.alertCtrl.create({
-        title: 'Erreur ! ',
-        subTitle: 'Veuillez générer svp les livraisons',
-        buttons: ['OK']
-      });
-      alert.present();
+      this.messageTools.toastMsg(this.toastCtrl, 'Veuillez générer svp les livraisons');
     }
   }
 

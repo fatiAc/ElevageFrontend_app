@@ -1,7 +1,5 @@
-import {HttpClient} from '@angular/common/http';
 import {Injectable} from '@angular/core';
-import {map} from "rxjs/operators";
-import {Http} from "@angular/http";
+import {HttpMethods} from "./tools/httpMethods";
 
 /*
   Generated class for the NourritureProvider provider.
@@ -12,16 +10,15 @@ import {Http} from "@angular/http";
 @Injectable()
 export class NourritureProvider {
 
-  constructor(public http: Http) {
+  constructor(public httpMethods: HttpMethods) {
   }
 
   cloneRationName(rationsName: any) {
-    this.http.get(' http://localhost:8080/app/nourriture/rationName').pipe(
-      map(res => res.json()))
+    this.httpMethods.get(' http://localhost:8080/app/nourriture/rationsInfo', '')
       .subscribe(response => {
         if (response != false) {
           for (let ration of response) {
-            rationsName.push(ration.nom);
+            rationsName.push({id: ration.id, nom: ration.nom});
           }
           return rationsName;
         }

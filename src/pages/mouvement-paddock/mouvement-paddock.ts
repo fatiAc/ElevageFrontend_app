@@ -1,6 +1,7 @@
 import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {MouvementProvider} from "../../providers/mouvement";
+import {MessageTools} from "../../providers/tools/messageTools";
 
 /**
  * Generated class for the MouvementPaddockPage page.
@@ -22,18 +23,20 @@ export class MouvementPaddockPage {
   paddocksSrc = [];
   paddocksDest = [];
   nbrElements: number;
-  user_login = "admin";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams,
+  constructor(public navCtrl: NavController,
               public mouvementProvider: MouvementProvider,
               public alertCtrl: AlertController,
-              public toastCtrl: ToastController) {
+              public toastCtrl: ToastController,
+              public messageTools: MessageTools) {
     this.initPaddocksSrc();
   }
 
   shift(data) {
-    for (let item of data) {
+    let i = 0;
+    while (i < data.length) {
       data.shift();
+      i++;
     }
   }
 
@@ -53,41 +56,27 @@ export class MouvementPaddockPage {
     this.mouvementProvider.getPaddocksOfDest(this.paddockSrc, this.paddocksDest);
   }
 
-  toastParam(msg) {
-    const toast = this.toastCtrl.create({
-      message: msg,
-      duration: 3000,
-      position: 'Middle'
-    });
-    toast.present();
-  }
 
   save() {
     if (this.paddockSrc == null) {
-      this.toastParam('Veuillez saisir le paddock source ');
+      this.messageTools.toastMsg(this.toastCtrl, 'Veuillez saisir le paddock source ');
     } else if (this.nbrElements == 0) {
-      this.toastParam('Veuillez changer le paddock source ')
+      this.messageTools.toastMsg(this.toastCtrl, 'Veuillez changer le paddock source ')
     } else if (this.paddockDest == null) {
-      this.toastParam('Veuillez saisir le paddock destination')
+      this.messageTools.toastMsg(this.toastCtrl, 'Veuillez saisir le paddock destination')
     } else {
-      this.mouvementProvider.createItems(this.selectedDate, this.paddockSrc, this.paddockDest, this.user_login)
+      this.mouvementProvider.createItems(this.selectedDate, this.paddockSrc, this.paddockDest)
         .subscribe(response => {
           if (response != null) {
-            this.mouvementProvider.updatePaddocksOfAnimals(this.paddockSrc, this.paddockDest);
-            const alert = this.alertCtrl.create({
-              title: 'Opération effectuée avec succes ! ',
-              subTitle: 'Vous avez bien déplacer les éléments ',
-              buttons: ['OK']
-            });
-            alert.present();
-            this.navCtrl.push(MouvementPaddockPage);
+            this.mouvementProvider.updatePaddocksOfAnimals(this.paddockSrc, this.paddockDest)
+              .subscribe(response => {
+                if (response != null) {
+                  this.messageTools.alertMsg(this.alertCtrl, 'Opération effectuée avec succes ! ', 'Vous avez bien déplacer les éléments ');
+                  this.navCtrl.push(MouvementPaddockPage);
+                }
+              });
           } else {
-            const alert = this.alertCtrl.create({
-              title: 'Erreur ! ',
-              subTitle: 'Veuillez réssayer votre opération',
-              buttons: ['OK']
-            });
-            alert.present();
+            this.messageTools.alertMsg(this.alertCtrl, 'Erreur ! ', 'Veuillez réssayer votre opération');
           }
         });
     }

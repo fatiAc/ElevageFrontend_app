@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import "rxjs/add/operator/retry";
-import {map} from "rxjs/operators";
 import {Http} from '@angular/http';
+import {HttpMethods} from "./tools/httpMethods";
 
 
 /*
@@ -13,17 +13,20 @@ import {Http} from '@angular/http';
 @Injectable()
 export class UserProvider {
 
-  constructor(public http: Http) {
+  url: string;
+
+  constructor(public http: Http, public httpMethods: HttpMethods) {
   }
 
   onVerifyLogin(login: string) {
-    return this.http.get('http://localhost:8080/app/user/verifyLogin/' + login).pipe(
-      map(res => res.json()));
+    this.url = 'http://localhost:8080/app/user/verifyLogin/';
+    return this.httpMethods.get(this.url, login);
   }
 
   verifyPassword(password: string) {
-    return this.http.get('http://localhost:8080/app/user/verifyPassword/' + password).pipe(
-      map(res => res.json()));
+    this.url = 'http://localhost:8080/app/user/verifyPassword/';
+    return this.httpMethods.get(this.url, password);
+
   }
 
 }

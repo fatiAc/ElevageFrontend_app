@@ -14,15 +14,14 @@ export class DetailAlimentationProvider {
   constructor(public http: Http) {
   }
 
-  clonePaddockName(paddocks: any) {
-    this.http.get('http://localhost:8080/app/paddock/allPadock').pipe(
+  clonePaddockData(date, user_login, paddocks) {
+    return this.http.get('http://localhost:8080/app/sessionAlimentation/getPaddockBySession/' + date + '/' + user_login).pipe(
       map(res => res.json()))
       .subscribe(response => {
         if (response != false) {
           for (let paddock of response) {
-            paddocks.push(paddock.nom);
+            paddocks.push({id: paddock.id, nom: paddock.nom});
           }
-          return paddocks;
         }
       });
   }

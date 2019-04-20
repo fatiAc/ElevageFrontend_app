@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {IonicPage, NavController, NavParams} from 'ionic-angular';
 import {MouvementElementPage} from "../mouvement-element/mouvement-element";
 import {MouvementPaddockPage} from "../mouvement-paddock/mouvement-paddock";
+import {MouvementProvider} from "../../providers/mouvement";
 
 /**
  * Generated class for the MouvementTabsPage page.
@@ -19,10 +20,13 @@ export class MouvementTabsPage {
 
   mouvementElement: any;
   mouvementPaddock: any;
+  public user_login: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public mouvementProvider: MouvementProvider) {
     this.mouvementElement = MouvementElementPage;
-    this.mouvementPaddock = MouvementPaddockPage
+    this.mouvementPaddock = MouvementPaddockPage;
+    this.user_login = navParams.get('login');
+    mouvementProvider.getConnectedUser(this.user_login);
   }
 
 

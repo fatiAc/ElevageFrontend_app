@@ -1,5 +1,7 @@
 {
   "name": "ElevageFrontend_app",
-  "integrations": {},
+  "integrations": {
+    "cordova": {}
+  },
   "type": "ionic-angular"
 }

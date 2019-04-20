@@ -1,5 +1,10 @@
 page-prepare-alimentation {
 
+  h1 {
+    text-align: center;
+    color: #4d4d4d;
+  }
+
   .myTables {
     font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
     border-collapse: collapse;
@@ -9,6 +14,8 @@ page-prepare-alimentation {
   .myTables td, #customers th {
     border: 1px solid #ddd;
     padding: 8px;
+    text-align: center;
+    background-color: #fffddf;
   }
 
   .myTables tr:nth-child(even) {
@@ -22,8 +29,8 @@ page-prepare-alimentation {
   .myTables th {
     padding-top: 12px;
     padding-bottom: 12px;
-    text-align: left;
-    background-color: #51a7e8;
+    text-align: center;
+    background-color: #0ab2e8;
     color: white;
   }
 }

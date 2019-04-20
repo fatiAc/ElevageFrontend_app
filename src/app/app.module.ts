@@ -23,6 +23,10 @@ import {MouvementProvider} from '../providers/mouvement';
 import {MouvementElementPage} from "../pages/mouvement-element/mouvement-element";
 import {MouvementPaddockPage} from "../pages/mouvement-paddock/mouvement-paddock";
 import {MouvementTabsPage} from "../pages/mouvement-tabs/mouvement-tabs";
+import {MesurePage} from "../pages/mesure/mesure";
+import { MesureProvider } from '../providers/mesure';
+import {HttpMethods} from "../providers/tools/httpMethods";
+import {MessageTools} from "../providers/tools/messageTools";
 
 @NgModule({
   declarations: [
@@ -36,7 +40,7 @@ import {MouvementTabsPage} from "../pages/mouvement-tabs/mouvement-tabs";
     MouvementElementPage,
     MouvementPaddockPage,
     MouvementTabsPage,
-
+    MesurePage
   ],
   imports: [
     //added by me
@@ -57,8 +61,8 @@ import {MouvementTabsPage} from "../pages/mouvement-tabs/mouvement-tabs";
     PrepareAlimentationPage,
     MouvementElementPage,
     MouvementTabsPage,
-    MouvementPaddockPage
-
+    MouvementPaddockPage,
+    MesurePage
   ],
   providers: [
     StatusBar,
@@ -70,7 +74,10 @@ import {MouvementTabsPage} from "../pages/mouvement-tabs/mouvement-tabs";
     NourritureProvider,
     RecupAlimentationProvider,
     PrepareAlimentationProvider,
-    MouvementProvider
+    MouvementProvider,
+    MesureProvider,
+    HttpMethods,
+    MessageTools
   ],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

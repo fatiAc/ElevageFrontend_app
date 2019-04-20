@@ -1,8 +1,8 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams} from 'ionic-angular';
+import {IonicPage, NavController, ToastController} from 'ionic-angular';
 import {UserProvider} from "../../providers/userProvider";
 import {HomePage} from "../home/home";
-import {AlimentationPage} from "../alimentation/alimentation";
+import {MessageTools} from "../../providers/tools/messageTools";
 
 @IonicPage()
 @Component({
@@ -15,20 +15,23 @@ export class SignInPage {
   password: string;
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              private userProvider: UserProvider) {
+              private userProvider: UserProvider,
+              public toastCtrl: ToastController,
+              public messageTools: MessageTools) {
   }
+
 
 
   signIn() {
     this.userProvider.onVerifyLogin(this.login).subscribe(response => {
-      console.log('Login Response:', response);
-      if (response == true) {
+      if (response == false) {
+        this.messageTools.toastMsg(this.toastCtrl, 'Login est incorrect ');
+      } else {
         this.userProvider.verifyPassword(this.password).subscribe(response => {
-          console.log('Password Response:', response);
-          if (response == true) {
-            this.navCtrl.push(AlimentationPage, this.login);
-          }
+          if (response == false) {
+            this.messageTools.toastMsg(this.toastCtrl, 'Le mot de passe est incorret ');
+          } else
+            this.navCtrl.setRoot(HomePage, {login: this.login});
         })
       }
       ;

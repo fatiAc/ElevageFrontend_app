@@ -1,7 +1,35 @@
 page-recup-alimentation {
 
-  table{
-    margin: auto;
-    width: 80%;
+  .myTables {
+    font-family: "Trebuchet MS", Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  .myTables td, #customers th {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+    background-color: #ffffff;
+  }
+
+  .myTables tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+
+  .myTables tr:hover {
+    background-color: #ddd;
+  }
+
+  .myTables th {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: center;
+    background-color: #0ab2e8;
+    color: white;
+  }
+  ion-grid{
+    border: .5px solid #222222;
+    border-radius: 7px;
   }
 }

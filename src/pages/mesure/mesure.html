@@ -4,12 +4,35 @@
   See http://ionicframework.com/docs/components/#navigation for more info on
   Ionic pages and navigation.
 -->
+<html>
 <ion-header>
   <ion-navbar>
-    <ion-title>mesure</ion-title>
   </ion-navbar>
 </ion-header>
 
-<ion-content padding>
+<ion-content class="content" padding>
+
+  <h1>Session de mesure</h1>
+    <ion-item class="ionDateTime">
+      <ion-label>Paddock source :</ion-label>
+      <ion-datetime display-format="YYYY-MM-DD" [(ngModel)]="selectedDate"></ion-datetime>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>SNIT :</ion-label>
+      <ion-input type="text" [(ngModel)]="snit" required="true"></ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Poids :</ion-label>
+      <ion-input type="number" [(ngModel)]="poids" required="true"></ion-input>
+    </ion-item>
+
+    <div padding>
+      <button (click)="save()" class="button">
+        <ion-icon slot="start" name="paper-plane"> Enregistrer</ion-icon>
+      </button>
+    </div>
 
 </ion-content>
+</html>
