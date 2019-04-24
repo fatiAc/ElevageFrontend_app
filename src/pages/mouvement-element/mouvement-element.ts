@@ -68,10 +68,10 @@ export class MouvementElementPage {
       this.mouvementProvider.createMouvemntMesure(this.poids, this.selectedDate,this.snit, this.paddockSrc[0].id, this.paddockDest)
         .subscribe(response => {
           if (response != null) {
-            this.messageTools.alertMsg(this.alertCtrl, 'Opération effectuée', 'Vous avez généré les livraisons');
+            this.messageTools.alertMsg(this.alertCtrl, 'Opération effectuée', 'Vous avez bien déplacé un élément');
             this.navCtrl.push(MouvementElementPage); // reinitialiser la page
           } else {
-            this.messageTools.alertMsg(this.alertCtrl, 'Erreur ! ', 'Veuillez réssayer votre opération');
+            this.messageTools.alertMsg(this.alertCtrl, 'Erreur ! ', 'Veuillez réessayer votre opération');
           }
         });
     }
