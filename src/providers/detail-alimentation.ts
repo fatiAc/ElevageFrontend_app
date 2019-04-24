@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Http} from "@angular/http";
-import {map} from "rxjs/operators";
+import {HttpMethods} from "./tools/httpMethods";
 
 /*
   Generated class for the DetailAlimentationProvider provider.
@@ -11,18 +10,24 @@ import {map} from "rxjs/operators";
 @Injectable()
 export class DetailAlimentationProvider {
 
-  constructor(public http: Http) {
+  constructor(public httpMethods: HttpMethods) {
   }
 
   clonePaddockData(date, user_login, paddocks) {
-    return this.http.get('http://localhost:8080/app/sessionAlimentation/getPaddockBySession/' + date + '/' + user_login).pipe(
-      map(res => res.json()))
+
+    return this.httpMethods.get('http://' + this.httpMethods.ipAdress + ':8080/app/sessionAlimentation/getPaddockBySession/', date + '/' + user_login)
       .subscribe(response => {
         if (response != false) {
           for (let paddock of response) {
             paddocks.push({id: paddock.id, nom: paddock.nom});
           }
         }
+      });
+  }
+
+  getConnectedUser(login) {
+    return this.httpMethods.get(' http://' + this.httpMethods.ipAdress + ':8080/app/sessionAlimentation/getConnectedUser/', login)
+      .subscribe(response => {
       });
   }
 

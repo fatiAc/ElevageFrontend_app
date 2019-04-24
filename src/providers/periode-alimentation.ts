@@ -24,7 +24,7 @@ export class PeriodeAlimentationProvider {
 
   clonePeriodeInfo(periodeData) {
     this.shift(periodeData);
-    this.httpMethods.get(' http://localhost:8080/app/periodeAlimentation/periodesInfo', '')
+    this.httpMethods.get(' http://' + this.httpMethods.ipAdress + ':8080/app/periodeAlimentation/periodesInfo', '')
       .subscribe(response => {
         if (response != false) {
           for (let item of response) {
@@ -39,7 +39,7 @@ export class PeriodeAlimentationProvider {
       login: userLogin,
       date: date,
     };
-    return this.httpMethods.post('http://localhost:8080/app/sessionAlimentation/saveSessionAlimentation', sessionData)
+    return this.httpMethods.post('http://' + this.httpMethods.ipAdress + ':8080/app/sessionAlimentation/saveSessionAlimentation', sessionData)
 
   }
 
@@ -51,7 +51,7 @@ export class PeriodeAlimentationProvider {
       rations: rations,
       quantites: quantites
     }
-    return this.httpMethods.post('http://localhost:8080/app/sessionAlimentation/periodeRation', data)
+    return this.httpMethods.post('http://' + this.httpMethods.ipAdress + ':8080/app/sessionAlimentation/periodeRation', data)
   }
 
   saveDetailAlimentation(selectedPaddock, note, nbrVache, comment) {
@@ -61,7 +61,7 @@ export class PeriodeAlimentationProvider {
       paddockID: selectedPaddock,
       comment: comment,
     };
-    return this.httpMethods.post(' http://localhost:8080/app/sessionAlimentation/detailSessionAlimentation', detail_aliment_Data)
+    return this.httpMethods.post(' http://' + this.httpMethods.ipAdress + ':8080/app/sessionAlimentation/detailSessionAlimentation', detail_aliment_Data)
   }
 
 

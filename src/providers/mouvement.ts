@@ -14,9 +14,8 @@ export class MouvementProvider {
   }
 
   getConnectedUser(login) {
-    return this.httpMethods.get(' http://localhost:8080/app/mouvement/getConnectedUser/', login)
+    return this.httpMethods.get(' http://' + this.httpMethods.ipAdress + ':8080/app/mouvement/getConnectedUser/', login)
       .subscribe(response => {
-        console.log("Innn ===== login is ", login);
       });
   }
 
@@ -29,13 +28,13 @@ export class MouvementProvider {
   }
 
   getPaddockbyAnimal(snit) {
-    let url = 'http://localhost:8080/app/mouvement/paddockByAnimal/';
+    let url = 'http://' + this.httpMethods.ipAdress + ':8080/app/mouvement/paddockByAnimal/';
     return this.httpMethods.get(url, snit);
   }
 
   getDesPaddocks(snit, data) {
     this.shift(data);
-    let url = 'http://localhost:8080/app/mouvement/desPaddocks/'
+    let url = 'http://' + this.httpMethods.ipAdress + ':8080/app/mouvement/desPaddocks/'
     return this.httpMethods.get(url, snit)
       .subscribe(paddocks => {
         if (paddocks != null) {
@@ -47,7 +46,7 @@ export class MouvementProvider {
   }
 
 
-  createMouvemntMesure(poids, date,animal_ID, paddock_src, paddock_dest) {
+  createMouvemntMesure(poids, date, animal_ID, paddock_src, paddock_dest) {
     const movmntMesureParam = {
       poids: poids,
       date: date,
@@ -55,18 +54,18 @@ export class MouvementProvider {
       paddock_src: paddock_src,
       paddock_dest: paddock_dest
     };
-    let putUrl = 'http://localhost:8080/app/mouvement/updateAnimalPaddock/'
+    let putUrl = 'http://' + this.httpMethods.ipAdress + ':8080/app/mouvement/updateAnimalPaddock/'
     this.httpMethods.put(putUrl + animal_ID + '/' + paddock_dest)
       .subscribe(response => {
 
       });
-    let postUrl = 'http://localhost:8080/app/mouvement/createMouvmntMesure';
+    let postUrl = 'http://' + this.httpMethods.ipAdress + ':8080/app/mouvement/createMouvmntMesure';
     return this.httpMethods.post(postUrl, movmntMesureParam);
   }
 
   getSrcPaddocks(data) {
     this.shift(data);
-    let url = 'http://localhost:8080/app/paddock/allPadock';
+    let url = 'http://' + this.httpMethods.ipAdress + ':8080/app/paddock/allPadock';
     return this.httpMethods.get(url, '')
       .subscribe(paddocks => {
         if (paddocks != null) {
@@ -78,13 +77,13 @@ export class MouvementProvider {
   }
 
   getNbrElement(selectedPaddock_ID) {
-    let url = 'http://localhost:8080/app/mouvement/countAnimalOfPaddock/';
+    let url = 'http://' + this.httpMethods.ipAdress + ':8080/app/mouvement/countAnimalOfPaddock/';
     return this.httpMethods.get(url, selectedPaddock_ID);
   }
 
   getPaddocksOfDest(paddock_ID, data) {
     this.shift(data);
-    let url = 'http://localhost:8080/app/mouvement/getPaddocksDest/';
+    let url = 'http://' + this.httpMethods.ipAdress + ':8080/app/mouvement/getPaddocksDest/';
     return this.httpMethods.get(url, paddock_ID)
       .subscribe(paddocks => {
         if (paddocks != null) {
@@ -101,11 +100,11 @@ export class MouvementProvider {
       paddock_src: paddock_src,
       paddock_dest: paddock_dest,
     };
-    return this.httpMethods.post('http://localhost:8080/app/mouvement/createItems', data)
+    return this.httpMethods.post('http://' + this.httpMethods.ipAdress + ':8080/app/mouvement/createItems', data)
   }
 
   updatePaddocksOfAnimals(paddock_src, paddock_dest) {
-    return this.httpMethods.put('http://localhost:8080/app/mouvement/updatePaddockOfAnimals/' + paddock_src + '/' + paddock_dest);
+    return this.httpMethods.put('http://' + this.httpMethods.ipAdress + ':8080/app/mouvement/updatePaddockOfAnimals/' + paddock_src + '/' + paddock_dest);
   }
 
 }

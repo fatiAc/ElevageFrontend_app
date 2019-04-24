@@ -14,7 +14,7 @@ export class NourritureProvider {
   }
 
   cloneRationName(rationsName: any) {
-    this.httpMethods.get(' http://localhost:8080/app/nourriture/rationsInfo', '')
+    this.httpMethods.get(' http://' + this.httpMethods.ipAdress + ':8080/app/nourriture/rationsInfo', '')
       .subscribe(response => {
         if (response != false) {
           for (let ration of response) {

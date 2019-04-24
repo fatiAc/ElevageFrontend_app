@@ -16,7 +16,7 @@ export class MesureProvider {
   }
 
   verifySnit(snit) {
-    this.url = 'http://localhost:8080/app/mesure/findBySnit/';
+    this.url = 'http://' + this.httpMethods.ipAdress + ':8080/app/mesure/findBySnit/';
     return this.httpMethods.get(this.url, snit);
   }
 
@@ -27,7 +27,7 @@ export class MesureProvider {
       user_login: user_login,
       snit: snit
     };
-    this.url = 'http://localhost:8080/app/mesure/createMesure'
+    this.url = 'http://' + this.httpMethods.ipAdress + ':8080/app/mesure/createMesure';
     return this.httpMethods.post(this.url, data);
   }
 

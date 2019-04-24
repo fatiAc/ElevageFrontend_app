@@ -23,7 +23,7 @@ export class RecupAlimentationProvider {
 
   getDataOfPeriodeRation(detailSessionID, data) {
     this.shift(data);
-    return this.httpMethods.get(' http://localhost:8080/app/periodeRation/periodeRationParams/', detailSessionID)
+    return this.httpMethods.get(' http://' + this.httpMethods.ipAdress + ':8080/app/periodeRation/periodeRationParams/', detailSessionID)
       .subscribe(res => {
         for (let item of res) {
           data.push({
@@ -38,9 +38,9 @@ export class RecupAlimentationProvider {
 
 
   getDetailOfSession(detailSessionData, periodeRationData) {
-    return this.httpMethods.get(' http://localhost:8080/app/sessionAlimentation/detailOfSession', '')
+    return this.httpMethods.get(' http://' + this.httpMethods.ipAdress + ':8080/app/sessionAlimentation/detailOfSession', '')
       .subscribe(detailSessionResponse => {
-        this.httpMethods.get('http://localhost:8080/app/paddock/paddockName/', detailSessionResponse.paddock_ID)
+        this.httpMethods.get('http://' + this.httpMethods.ipAdress + ':8080/app/paddock/paddockName/', detailSessionResponse.paddock_ID)
           .subscribe(paddockNameResponse => {
             detailSessionData.paddock = paddockNameResponse.nom;
             detailSessionData.note = detailSessionResponse.note;

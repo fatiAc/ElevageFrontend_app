@@ -23,7 +23,7 @@ export class PrepareAlimentationProvider {
 
   rationOfSelectedPeriode(periodeID, date, userLogin, data) {
     this.shift(data);
-    return this.httpMethods.get('http://localhost:8080/app/nourriture/rationOfSelectedPeriode/', periodeID + '/' + date + '/' + userLogin)
+    return this.httpMethods.get('http://' + this.httpMethods.ipAdress + ':8080/app/nourriture/rationOfSelectedPeriode/', periodeID + '/' + date + '/' + userLogin)
       .subscribe(rations => {
         if (rations != null) {
           for (let item of rations) {
@@ -34,14 +34,14 @@ export class PrepareAlimentationProvider {
   }
 
   calculeQuantiteTotal(periodeID, rationID, date, userLogin) {
-    let url = 'http://localhost:8080/app/periodeRation/qtteTotale/';
+    let url = 'http://' + this.httpMethods.ipAdress + ':8080/app/periodeRation/qtteTotale/';
     return this.httpMethods.get(url, periodeID + '/' + rationID + '/' + date + '/' + userLogin);
 
   }
 
   getPaddocksWithQtte(periodeID, rationID, date, userLogin, data) {
     this.shift(data);
-    let url = 'http://localhost:8080/app/periodeRation/paddocksWithQtte/';
+    let url = 'http://' + this.httpMethods.ipAdress + ':8080/app/periodeRation/paddocksWithQtte/';
     return this.httpMethods.get(url, periodeID + '/' + rationID + '/' + date + '/' + userLogin)
       .subscribe(response => {
         if (response != null) {
@@ -54,7 +54,7 @@ export class PrepareAlimentationProvider {
 
 
   machineInfo(nourriture_ID, data) {
-    return this.httpMethods.get('http://localhost:8080/app/machine/findByNourriture/', nourriture_ID)
+    return this.httpMethods.get('http://' + this.httpMethods.ipAdress + ':8080/app/machine/findByNourriture/', nourriture_ID)
       .subscribe(machines => {
         if (machines != null) {
           for (let item of machines) {
@@ -139,7 +139,7 @@ export class PrepareAlimentationProvider {
   }
 
   createRecupSessionWithLivraison(date, userLogin, nbrPartie, qtteTotal, machineID, periodeID, nourritureID, livraisons) {
-    this.httpMethods.get('http://localhost:8080/app/recup_session/sessionByDateAndLogin/', date + '/' + userLogin)
+    this.httpMethods.get('http://' + this.httpMethods.ipAdress + ':8080/app/recup_session/sessionByDateAndLogin/', date + '/' + userLogin)
       .subscribe(response => {
         if (response != null) {
           const recupSessionParam = {
@@ -149,7 +149,7 @@ export class PrepareAlimentationProvider {
             periodeID: periodeID,
             nourritureID: nourritureID
           };
-          this.httpMethods.post('http://localhost:8080/app/recup_session/saveRecupSession', recupSessionParam)
+          this.httpMethods.post('http://' + this.httpMethods.ipAdress + ':8080/app/recup_session/saveRecupSession', recupSessionParam)
             .subscribe(data => {
               if (data != null) {
                 for (let livraison of livraisons) {
@@ -170,7 +170,7 @@ export class PrepareAlimentationProvider {
       details: details,
       nourriture_ID: nourriture_ID
     };
-    this.httpMethods.post(' http://localhost:8080/app/recup_session/saveLivraison', livraisonData)
+    this.httpMethods.post(' http://' + this.httpMethods.ipAdress + ':8080/app/recup_session/saveLivraison', livraisonData)
       .subscribe(response => {
       });
 

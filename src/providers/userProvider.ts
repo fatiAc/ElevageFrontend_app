@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import "rxjs/add/operator/retry";
 import {Http} from '@angular/http';
 import {HttpMethods} from "./tools/httpMethods";
+import {HomePage} from "../pages/home/home";
+import {SignInPage} from "../pages/sign-in/sign-in";
 
 
 /*
@@ -19,15 +21,15 @@ export class UserProvider {
   }
 
   onVerifyLogin(login: string) {
-    this.url = 'http://localhost:8080/app/user/verifyLogin/';
+    this.url = 'http://' + this.httpMethods.ipAdress + ':8080/app/user/verifyLogin/';
     return this.httpMethods.get(this.url, login);
   }
 
   verifyPassword(password: string) {
-    this.url = 'http://localhost:8080/app/user/verifyPassword/';
+    this.url = 'http://' + this.httpMethods.ipAdress + ':8080/app/user/verifyPassword/';
     return this.httpMethods.get(this.url, password);
-
   }
+
 
 }
 
