@@ -75,7 +75,6 @@ export class DetailAlimentationPage {
             .subscribe(response => {
               this.periode_aliment_provider.savePeriodeRation(this.nbrVache, this.periodes, this.selectedRations, this.quantites)
                 .subscribe(response => {
-                  console.log("response ===   ",response);
                   this.navCtrl.push(RecupAlimentationPage);
                 });
             });
