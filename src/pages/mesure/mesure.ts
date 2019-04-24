@@ -40,12 +40,12 @@ export class MesurePage {
       this.mesureProvider.verifySnit(this.snit)
         .subscribe(response => {
           if (response == false) {
-            this.messageTools.toastMsg(this.toastCtrl, 'animal n\'existe pas\n');
+            this.messageTools.toastMsg(this.toastCtrl, 'Animal n\'existe pas\n');
           } else {
             this.mesureProvider.createMesure(this.poids, this.selectedDate, this.user_login, this.snit)
               .subscribe(response => {
                 if (response != null) {
-                  this.messageTools.alertMsg(this.alertCtrl, 'Opération effectuée avec succes ', '');
+                  this.messageTools.alertMsg(this.alertCtrl, 'Opération effectuée avec succès ', '');
                   this.navCtrl.push(MesurePage); // reinitialiser la page
                 }
               })
