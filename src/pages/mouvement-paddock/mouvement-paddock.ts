@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {AlertController, IonicPage, NavController ,ToastController} from 'ionic-angular';
 import {MouvementProvider} from "../../providers/mouvement";
 import {MessageTools} from "../../providers/tools/messageTools";
 
@@ -71,12 +71,12 @@ export class MouvementPaddockPage {
             this.mouvementProvider.updatePaddocksOfAnimals(this.paddockSrc, this.paddockDest)
               .subscribe(response => {
                 if (response != null) {
-                  this.messageTools.alertMsg(this.alertCtrl, 'Opération effectuée avec succes ! ', 'Vous avez bien déplacer les éléments ');
+                  this.messageTools.alertMsg(this.alertCtrl, 'Opération effectuée avec succès ! ', 'Vous avez bien déplacer tous les éléments ');
                   this.navCtrl.push(MouvementPaddockPage);
                 }
               });
           } else {
-            this.messageTools.alertMsg(this.alertCtrl, 'Erreur ! ', 'Veuillez réssayer votre opération');
+            this.messageTools.alertMsg(this.alertCtrl, 'Erreur ! ', 'Veuillez réessayer votre opération');
           }
         });
     }
