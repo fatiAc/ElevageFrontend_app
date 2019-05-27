@@ -8,6 +8,7 @@ import {StatusBar} from "@ionic-native/status-bar";
 import {SplashScreen} from "@ionic-native/splash-screen";
 import {SignInPage} from "../sign-in/sign-in";
 import {DetailAlimentationProvider} from "../../providers/detail-alimentation";
+import {CookieService} from "ngx-cookie-service";
 
 @Component({
   selector: 'page-home',
@@ -23,14 +24,14 @@ export class HomePage {
 
   constructor(public navCtrl: NavController, public platform: Platform, public statusBar: StatusBar,
               public splashScreen: SplashScreen, private menu: MenuController,
-              public navParam: NavParams, public detailAlimentProvider: DetailAlimentationProvider) {
+              public navParam: NavParams, public detailAlimentProvider: DetailAlimentationProvider,
+              public cookieService: CookieService
+  ) {
 
     this.initializeApp();
   }
 
   initializeApp() {
-    this.login = this.navParam.get('login');
-    this.detailAlimentProvider.getConnectedUser(this.login);
     this.pages = [
       {title: 'Alimentation', component: DetailAlimentationPage, icon: 'nutrition'},
       {title: 'Mesure', component: MesurePage, icon: 'speedometer'},
@@ -54,6 +55,7 @@ export class HomePage {
   }
 
   signOut() {
+    this.cookieService.set('login', null);
     this.navCtrl.setRoot(SignInPage);
   }
 

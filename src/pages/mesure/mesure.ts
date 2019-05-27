@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {MesureProvider} from "../../providers/mesure";
 import {MessageTools} from "../../providers/tools/messageTools";
+import {CookieService} from "ngx-cookie-service";
 
 /**
  * Generated class for the MesurePage page.
@@ -26,9 +27,10 @@ export class MesurePage {
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public mesureProvider: MesureProvider, public toastCtrl: ToastController,
               public alertCtrl: AlertController,
-              public messageTools: MessageTools) {
+              public messageTools: MessageTools,
+              public cookieService: CookieService) {
 
-    this.user_login = this.navParams.get('login');
+    this.user_login = cookieService.get('login');
   }
 
   save() {

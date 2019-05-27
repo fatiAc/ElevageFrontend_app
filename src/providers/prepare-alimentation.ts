@@ -21,16 +21,9 @@ export class PrepareAlimentationProvider {
     }
   }
 
-  rationOfSelectedPeriode(periodeID, date, userLogin, data) {
-    this.shift(data);
+  rationOfSelectedPeriode(periodeID, date, userLogin) {
     return this.httpMethods.get('http://' + this.httpMethods.ipAdress + ':8080/app/nourriture/rationOfSelectedPeriode/', periodeID + '/' + date + '/' + userLogin)
-      .subscribe(rations => {
-        if (rations != null) {
-          for (let item of rations) {
-            data.push({id: item.id, rationName: item.rationName})
-          }
-        }
-      });
+
   }
 
   calculeQuantiteTotal(periodeID, rationID, date, userLogin) {
@@ -39,29 +32,15 @@ export class PrepareAlimentationProvider {
 
   }
 
-  getPaddocksWithQtte(periodeID, rationID, date, userLogin, data) {
-    this.shift(data);
+  getPaddocksWithQtte(periodeID, rationID, date, userLogin) {
     let url = 'http://' + this.httpMethods.ipAdress + ':8080/app/periodeRation/paddocksWithQtte/';
     return this.httpMethods.get(url, periodeID + '/' + rationID + '/' + date + '/' + userLogin)
-      .subscribe(response => {
-        if (response != null) {
-          for (let item of response) {
-            data.push({paddockID: item.paddock_ID, paddockName: item.paddockName, qtte: item.quantite})
-          }
-        }
-      });
   }
 
 
-  machineInfo(nourriture_ID, data) {
+  machineInfo(nourriture_ID) {
     return this.httpMethods.get('http://' + this.httpMethods.ipAdress + ':8080/app/machine/findByNourriture/', nourriture_ID)
-      .subscribe(machines => {
-        if (machines != null) {
-          for (let item of machines) {
-            data.push({id: item.id, machineName: item.name, capacite: item.capacite});
-          }
-        }
-      });
+
   }
 
   calculeDefaultNbrPartie(machineCapacite, qtteTotale) {
@@ -101,9 +80,11 @@ export class PrepareAlimentationProvider {
         let paddockInfo = paddockWithQtte[i];
         if (qttePartie >= paddockInfo.qtte) {
           paddockLivraison.push({
-            paddockID: paddockInfo.paddockID,
+            paddockID: paddockInfo.paddock_ID,
             paddockName: paddockInfo.paddockName,
-            qtte: paddockInfo.qtte
+            qtte: paddockInfo.quantite,
+            nbrVache: paddockInfo.nbrVache,
+            commentaire: paddockInfo.commentaire
           });
           qttePartie -= paddockInfo.qtte;
           if (qttePartie == 0) {
@@ -112,9 +93,12 @@ export class PrepareAlimentationProvider {
           i++;
         } else {
           paddockLivraison.push({
-            paddockID: paddockInfo.paddockID,
+            paddockID: paddockInfo.paddock_ID,
             paddockName: paddockInfo.paddockName,
-            qtte: qttePartie
+            qtte: qttePartie,
+            nbrVache: paddockInfo.nbrVache,
+            commentaire: paddockInfo.commentaire
+
           });
           paddockInfo.qtte -= qttePartie;
           qttePartie = 0;
@@ -155,7 +139,7 @@ export class PrepareAlimentationProvider {
                 for (let livraison of livraisons) {
                   this.createLivraison(livraison.numero, livraison.quantite, livraison.details, nourritureID);
                 }
-              } else console.log("failed !!! ! ! ! ! ! ");
+              }
             });
         }
       });

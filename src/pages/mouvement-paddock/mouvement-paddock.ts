@@ -1,7 +1,8 @@
 import {Component} from '@angular/core';
-import {AlertController, IonicPage, NavController ,ToastController} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, ToastController} from 'ionic-angular';
 import {MouvementProvider} from "../../providers/mouvement";
 import {MessageTools} from "../../providers/tools/messageTools";
+import {CookieService} from "ngx-cookie-service";
 
 /**
  * Generated class for the MouvementPaddockPage page.
@@ -23,12 +24,14 @@ export class MouvementPaddockPage {
   paddocksSrc = [];
   paddocksDest = [];
   nbrElements: number;
+  userLogin: string;
 
   constructor(public navCtrl: NavController,
               public mouvementProvider: MouvementProvider,
               public alertCtrl: AlertController,
               public toastCtrl: ToastController,
-              public messageTools: MessageTools) {
+              public messageTools: MessageTools,
+              public cookieService: CookieService) {
     this.initPaddocksSrc();
   }
 
@@ -65,7 +68,8 @@ export class MouvementPaddockPage {
     } else if (this.paddockDest == null) {
       this.messageTools.toastMsg(this.toastCtrl, 'Veuillez saisir le paddock destination')
     } else {
-      this.mouvementProvider.createItems(this.selectedDate, this.paddockSrc, this.paddockDest)
+      this.userLogin = this.cookieService.get('login');
+      this.mouvementProvider.createItems(this.selectedDate, this.paddockSrc, this.paddockDest, this.userLogin)
         .subscribe(response => {
           if (response != null) {
             this.mouvementProvider.updatePaddocksOfAnimals(this.paddockSrc, this.paddockDest)

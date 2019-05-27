@@ -13,22 +13,9 @@ export class DetailAlimentationProvider {
   constructor(public httpMethods: HttpMethods) {
   }
 
-  clonePaddockData(date, user_login, paddocks) {
-
+  getPaddocksInfo(date, user_login) {
     return this.httpMethods.get('http://' + this.httpMethods.ipAdress + ':8080/app/sessionAlimentation/getPaddockBySession/', date + '/' + user_login)
-      .subscribe(response => {
-        if (response != false) {
-          for (let paddock of response) {
-            paddocks.push({id: paddock.id, nom: paddock.nom});
-          }
-        }
-      });
   }
 
-  getConnectedUser(login) {
-    return this.httpMethods.get(' http://' + this.httpMethods.ipAdress + ':8080/app/sessionAlimentation/getConnectedUser/', login)
-      .subscribe(response => {
-      });
-  }
 
 }

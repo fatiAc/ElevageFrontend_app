@@ -2,6 +2,7 @@ import {Component} from '@angular/core';
 import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {MouvementProvider} from "../../providers/mouvement";
 import {MessageTools} from "../../providers/tools/messageTools";
+import {CookieService} from "ngx-cookie-service";
 
 /**
  * Generated class for the MouvementElementPage page.
@@ -23,11 +24,14 @@ export class MouvementElementPage {
   desPaddocks = [];
   paddockDest: number;
   poids: number;
+  userLogin: string;
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public mouvementProvider: MouvementProvider,
               public alertCtrl: AlertController,
-              public toastCtrl: ToastController, public messageTools: MessageTools) {
+              public toastCtrl: ToastController, public messageTools: MessageTools,
+              public cookieService: CookieService) {
+    this.userLogin = cookieService.get('login');
   }
 
 
@@ -65,7 +69,7 @@ export class MouvementElementPage {
     } else if (this.paddockDest == null) {
       this.messageTools.toastMsg(this.toastCtrl, 'veuillez selectionner le paddock destination');
     } else {
-      this.mouvementProvider.createMouvemntMesure(this.poids, this.selectedDate,this.snit, this.paddockSrc[0].id, this.paddockDest)
+      this.mouvementProvider.createMouvemntMesure(this.poids, this.selectedDate, this.snit, this.paddockSrc[0].id, this.paddockDest, this.userLogin)
         .subscribe(response => {
           if (response != null) {
             this.messageTools.alertMsg(this.alertCtrl, 'Opération effectuée', 'Vous avez bien déplacé un élément');

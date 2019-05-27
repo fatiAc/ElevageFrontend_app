@@ -22,16 +22,8 @@ export class PeriodeAlimentationProvider {
     }
   }
 
-  clonePeriodeInfo(periodeData) {
-    this.shift(periodeData);
-    this.httpMethods.get(' http://' + this.httpMethods.ipAdress + ':8080/app/periodeAlimentation/periodesInfo', '')
-      .subscribe(response => {
-        if (response != false) {
-          for (let item of response) {
-            periodeData.push({id: item.id, periode: item.periode});
-          }
-        }
-      });
+  getPeriodeInfo() {
+    return this.httpMethods.get(' http://' + this.httpMethods.ipAdress + ':8080/app/periodeAlimentation/periodesInfo', '');
   }
 
   saveSessionAlimentation(userLogin, date) {

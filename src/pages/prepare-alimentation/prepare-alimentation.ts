@@ -3,6 +3,7 @@ import {AlertController, IonicPage, NavController, NavParams, ToastController} f
 import {PeriodeAlimentationProvider} from "../../providers/periode-alimentation";
 import {PrepareAlimentationProvider} from "../../providers/prepare-alimentation";
 import {MessageTools} from "../../providers/tools/messageTools";
+import {CookieService} from "ngx-cookie-service";
 
 /**
  * Generated class for the PrepareAlimentationPage page.
@@ -21,13 +22,13 @@ export class PrepareAlimentationPage {
   selectedDate = new Date().toISOString();
   selectedPeriode: number;
   selectedRation: number;
-  periodes = [{id: null, periode: null}];
+  periodes: any
   userLogin: string;
-  rations = [];
+  rations: any;
   machineInfo = [];
   qtteTotale: number;
-  paddocks_qtte = [];
-  selectedPaddocks = [];
+  paddocks_qtte: any;
+  selectedPaddocks: any;
   selectedMachine = [];
   machines = [];
   nbrPartie: number;
@@ -40,14 +41,18 @@ export class PrepareAlimentationPage {
               public prepareAlimmentProvider: PrepareAlimentationProvider,
               public alertCtrl: AlertController,
               public messageTools: MessageTools,
-              public toastCtrl: ToastController) {
+              public toastCtrl: ToastController,
+              public cookieService: CookieService) {
     this.initUI();
   }
 
 
   initUI() {
-    this.userLogin = this.navParams.get('login');
-    this.periodeAliment_Provider.clonePeriodeInfo(this.periodes);
+    this.userLogin = this.cookieService.get('login');
+    this.periodeAliment_Provider.getPeriodeInfo()
+      .subscribe(response => {
+        this.periodes = response;
+      });
   }
 
   shift(data) {
@@ -59,24 +64,40 @@ export class PrepareAlimentationPage {
   }
 
   updateRations() {
-    this.shift(this.rations);
-    this.prepareAlimmentProvider.rationOfSelectedPeriode(this.selectedPeriode, this.selectedDate, this.userLogin, this.rations);
+    this.prepareAlimmentProvider.rationOfSelectedPeriode(this.selectedPeriode, this.selectedDate, this.userLogin)
+      .subscribe(response => {
+        this.rations = response;
+      });
+    ;
   }
 
 
   getQtteTotaleAndPaddocks() {
-    this.shift(this.machines);
-    this.prepareAlimmentProvider.machineInfo(this.selectedRation, this.machines);
+    this.prepareAlimmentProvider.machineInfo(this.selectedRation)
+      .subscribe(response => {
+        this.machines = response;
+      });
     this.prepareAlimmentProvider.calculeQuantiteTotal(this.selectedPeriode, this.selectedRation, this.selectedDate, this.userLogin)
       .subscribe(data => {
         if (data != null) {
           this.qtteTotale = data[0].qtteTotale;
         }
       });
-    this.shift(this.paddocks_qtte);
-    this.shift(this.selectedPaddocks);
-    this.prepareAlimmentProvider.getPaddocksWithQtte(this.selectedPeriode, this.selectedRation, this.selectedDate, this.userLogin, this.paddocks_qtte);
-    this.prepareAlimmentProvider.getPaddocksWithQtte(this.selectedPeriode, this.selectedRation, this.selectedDate, this.userLogin, this.selectedPaddocks);
+    this.paddocks_qtte = [];
+    this.selectedPaddocks = [];
+    this.prepareAlimmentProvider.getPaddocksWithQtte(this.selectedPeriode, this.selectedRation, this.selectedDate, this.userLogin)
+      .subscribe(response => {
+        if (response != null) {
+          this.paddocks_qtte = response;
+        }
+      });
+    this.prepareAlimmentProvider.getPaddocksWithQtte(this.selectedPeriode, this.selectedRation, this.selectedDate, this.userLogin)
+      .subscribe(response => {
+        if (response != null) {
+          this.selectedPaddocks = response;
+        }
+      });
+    ;
   }
 
 
@@ -88,8 +109,16 @@ export class PrepareAlimentationPage {
   livraisonInfo(list) {
     this.livraisons = [];
     this.prepareAlimmentProvider.genererLivraison(this.livraisons, this.selectedPaddocks, list);
+    console.log('selected paddocks === ', this.selectedPaddocks);
+    console.log('+++++++++++++++++++ ', this.livraisons);
     this.selectedPaddocks = [];
-    this.prepareAlimmentProvider.getPaddocksWithQtte(this.selectedPeriode, this.selectedRation, this.selectedDate, this.userLogin, this.selectedPaddocks);
+    this.prepareAlimmentProvider.getPaddocksWithQtte(this.selectedPeriode, this.selectedRation, this.selectedDate, this.userLogin)
+      .subscribe(response => {
+        if (response != null) {
+          this.selectedPaddocks = response;
+        }
+      });
+    ;
   }
 
   getDefaultNbrPartieAndLivraison() {

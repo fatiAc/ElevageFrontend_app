@@ -27,6 +27,7 @@ import {MesurePage} from "../pages/mesure/mesure";
 import { MesureProvider } from '../providers/mesure';
 import {HttpMethods} from "../providers/tools/httpMethods";
 import {MessageTools} from "../providers/tools/messageTools";
+import {CookieService} from "ngx-cookie-service";
 
 @NgModule({
   declarations: [
@@ -68,6 +69,7 @@ import {MessageTools} from "../providers/tools/messageTools";
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    CookieService,
     UserProvider,
     DetailAlimentationProvider,
     PeriodeAlimentationProvider,

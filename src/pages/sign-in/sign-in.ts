@@ -3,6 +3,7 @@ import {IonicPage, NavController, ToastController} from 'ionic-angular';
 import {UserProvider} from "../../providers/userProvider";
 import {HomePage} from "../home/home";
 import {MessageTools} from "../../providers/tools/messageTools";
+import {CookieService} from "ngx-cookie-service";
 
 @IonicPage()
 @Component({
@@ -17,9 +18,9 @@ export class SignInPage {
   constructor(public navCtrl: NavController,
               private userProvider: UserProvider,
               public toastCtrl: ToastController,
-              public messageTools: MessageTools) {
+              public messageTools: MessageTools,
+              public cookieService: CookieService) {
   }
-
 
 
   signIn() {
@@ -30,8 +31,10 @@ export class SignInPage {
         this.userProvider.verifyPassword(this.password).subscribe(response => {
           if (response == false) {
             this.messageTools.toastMsg(this.toastCtrl, 'Le mot de passe est incorret ');
-          } else
+          } else {
+            this.cookieService.set('login', this.login);
             this.navCtrl.setRoot(HomePage, {login: this.login});
+          }
         })
       }
       ;

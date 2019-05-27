@@ -20,13 +20,11 @@ export class MouvementTabsPage {
 
   mouvementElement: any;
   mouvementPaddock: any;
-  public user_login: string;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public mouvementProvider: MouvementProvider) {
+  constructor(public navCtrl: NavController) {
+
     this.mouvementElement = MouvementElementPage;
     this.mouvementPaddock = MouvementPaddockPage;
-    this.user_login = navParams.get('login');
-    mouvementProvider.getConnectedUser(this.user_login);
   }
 
 

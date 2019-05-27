@@ -46,13 +46,14 @@ export class MouvementProvider {
   }
 
 
-  createMouvemntMesure(poids, date, animal_ID, paddock_src, paddock_dest) {
+  createMouvemntMesure(poids, date, animal_ID, paddock_src, paddock_dest,userLogin) {
     const movmntMesureParam = {
       poids: poids,
       date: date,
       animal_ID: animal_ID,
       paddock_src: paddock_src,
-      paddock_dest: paddock_dest
+      paddock_dest: paddock_dest,
+      userLogin: userLogin
     };
     let putUrl = 'http://' + this.httpMethods.ipAdress + ':8080/app/mouvement/updateAnimalPaddock/'
     this.httpMethods.put(putUrl + animal_ID + '/' + paddock_dest)
@@ -94,11 +95,12 @@ export class MouvementProvider {
       });
   }
 
-  createItems(date, paddock_src, paddock_dest) {
+  createItems(date, paddock_src, paddock_dest,userLogin) {
     let data = {
       date: date,
       paddock_src: paddock_src,
       paddock_dest: paddock_dest,
+      userLogin: userLogin
     };
     return this.httpMethods.post('http://' + this.httpMethods.ipAdress + ':8080/app/mouvement/createItems', data)
   }

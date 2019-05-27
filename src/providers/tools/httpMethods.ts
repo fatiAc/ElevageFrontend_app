@@ -11,8 +11,9 @@ import {Headers, Http, RequestOptions} from "@angular/http";
 @Injectable()
 export class HttpMethods {
 
+  public ipAdress = 'localhost';
+
   constructor(public http: Http) {
-    console.log('Hello HttpMethods Provider');
   }
 
   get(url: string, data) {

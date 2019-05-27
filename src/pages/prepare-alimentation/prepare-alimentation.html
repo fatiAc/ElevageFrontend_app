@@ -48,7 +48,7 @@
         </tr>
         <tr *ngFor="let item of paddocks_qtte">
           <td>{{item.paddockName}}</td>
-          <td>{{item.qtte}}</td>
+          <td>{{item.quantite}}</td>
         </tr>
       </table>
     </ion-item>
@@ -56,8 +56,8 @@
       <ion-label>Machine :</ion-label>
       <ion-select [(ngModel)]="selectedMachine" (ngModelChange)="getDefaultNbrPartieAndLivraison()">
         <ion-option *ngFor="let machine of machines"
-                    [value]="{id: machine.id, name: machine.machineName, capacite: machine.capacite}"
-                    selected="false">{{machine.machineName}}, {{machine.capacite}} KG
+                    [value]="{id: machine.id, name: machine.name, capacite: machine.capacite}"
+                    selected="false">{{machine.name}}, {{machine.capacite}} KG
         </ion-option>
       </ion-select>
     </ion-item>

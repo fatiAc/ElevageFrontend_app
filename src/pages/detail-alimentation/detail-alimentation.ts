@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {IonicPage, NavController, ToastController} from 'ionic-angular';
 import {DetailAlimentationProvider} from "../../providers/detail-alimentation";
 import {PeriodeAlimentationProvider} from "../../providers/periode-alimentation";
 import {NourritureProvider} from "../../providers/nourritureProvider";
-import {LoadingController} from 'ionic-angular';
 import {RecupAlimentationPage} from "../recup-alimentation/recup-alimentation";
 import {MessageTools} from "../../providers/tools/messageTools";
+import {CookieService} from "ngx-cookie-service";
 
 /**
  * Generated class for the DetailAlimentationPage page.
@@ -22,8 +22,8 @@ import {MessageTools} from "../../providers/tools/messageTools";
 export class DetailAlimentationPage {
 
   private login: string;
-  paddocks = [];
-  periodes = [];
+  paddocks: any;
+  periodes: any;
   rations = [];
   quantites = new Array();
   selectedRations = new Array();
@@ -37,29 +37,42 @@ export class DetailAlimentationPage {
   data = [];
 
   constructor(public navCtrl: NavController,
-              public navParams: NavParams,
-              public loadingController: LoadingController,
               public detail_aliment_provider: DetailAlimentationProvider,
               public periode_aliment_provider: PeriodeAlimentationProvider,
               public  nourritureProvider: NourritureProvider,
               public messageTools: MessageTools,
-              public toastCtrl: ToastController) {
+              public toastCtrl: ToastController,
+              public cookieService: CookieService) {
 
     this.initUI();
   }
 
-  getPaddockData() {
-    this.paddocks = [];
-    this.detail_aliment_provider.clonePaddockData(this.date, this.login, this.paddocks)
-  }
 
   initUI() {
-    this.login = this.navParams.get('login');
-    this.detail_aliment_provider.clonePaddockData(this.date, this.login, this.paddocks)
-    this.periode_aliment_provider.clonePeriodeInfo(this.periodes);
-    this.nourritureProvider.cloneRationName(this.rations);
+    this.login = this.cookieService.get('login');
+    this.getPaddockData();
+    this.periode_aliment_provider.getPeriodeInfo()
+      .subscribe(response => {
+        if (response != false) {
+          this.periodes = response;
+        }
+      });
+    this.nourritureProvider.getRationName()
+      .subscribe(response => {
+        if (response != false) {
+          this.rations = response;
+        }
+      });
+    ;
   }
 
+  getPaddockData() {
+    this.paddocks = [];
+    this.detail_aliment_provider.getPaddocksInfo(this.date, this.login)
+      .subscribe(response => {
+        this.paddocks = response;
+      })
+  }
 
   valider() {
     if (this.selectedPaddock == null) {

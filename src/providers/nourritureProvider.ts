@@ -13,16 +13,8 @@ export class NourritureProvider {
   constructor(public httpMethods: HttpMethods) {
   }
 
-  cloneRationName(rationsName: any) {
-    this.httpMethods.get(' http://' + this.httpMethods.ipAdress + ':8080/app/nourriture/rationsInfo', '')
-      .subscribe(response => {
-        if (response != false) {
-          for (let ration of response) {
-            rationsName.push({id: ration.id, nom: ration.nom});
-          }
-          return rationsName;
-        }
-      });
+  getRationName() {
+    return this.httpMethods.get(' http://' + this.httpMethods.ipAdress + ':8080/app/nourriture/rationsInfo', '');
   }
 
 }
